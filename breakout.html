@@ -18,11 +18,30 @@
                 var paddleWidth = 100;
                 var paddleHeight = 15;
 
+                // how many pixels paddle will move over the X-axis
                 var paddleDeltaX = 0;
                 var paddleDeltaY = 0;
+                var paddleSpeedX = 10;
 
                 function drawPaddle() {
                     context.fillRect(paddleX,paddleY,paddleWidth,paddleHeight);
+                }
+
+                function movePaddle() {
+                    if(paddleMove == 'LEFT') {
+                        paddleDeltaX = -paddleSpeedX;
+                    } else if(paddleMove == 'RIGHT') {
+                        paddleDeltaX = paddleSpeedX;
+                    } else {
+                        paddleDeltaX = 0;
+                    }
+
+                    // If paddle reaches the side of the screen, then don't let it move any further
+                    if(paddleX + paddleDeltaX < 0 || paddleX + paddleDeltaX + paddleWidth > canvas.width) {
+                        paddleDeltaX = 0;
+                    }
+
+                    paddleX += paddleDeltaX;
                 }
 
                 //declare and draw ball on screen
@@ -40,6 +59,45 @@
 
                     //Fill up the path that you just drew
                     context.fill();
+                }
+
+                // how many pixels ball will move over the X-axis
+                var ballDeltaX;
+                // how many pixels ball will move over the Y-axis
+                var ballDeltaY;
+
+                function moveBall() {
+                    // First we must check if we will bump into something
+
+                    // If top of the ball touches the top the reverse Y direction (move downwards)
+                    if(ballY + ballDeltaY - ballRadius < 0) {
+                        ballDeltaY = -ballDeltaY;
+                    }
+
+                    // If the bottom of the ball touches the bottom of the screen then end the game
+                    if(ballY + ballDeltaY + ballRadius > canvas.height) {
+                        endGame();
+                    }
+
+                    // If side of ball touches either side of the wall then reverse X direction
+                    //left of ball moves too far left - reverse direction to move right
+                    if((ballX + ballDeltaX - ballRadius < 0) || 
+                        //or right side of ball moves too far right - reverse direction to move left
+                        (ballX + ballDeltaX + ballRadius > canvas.width)) {
+                        ballDeltaX = -ballDeltaX;
+                    }
+
+                    // If the bottom of ball reaches top of paddle
+                    if(ballY + ballDeltaY + ballRadius >= paddleY) {
+                        // and it is positioned between the two ends of the paddle(is on top)
+                        if(ballX + ballDeltaX >= paddleX && ballX + ballDeltaX <= paddleX + paddleWidth) {
+                            ballDeltaY = -ballDeltaY;
+                        }
+                    }
+
+                    //Move the ball
+                    ballX += ballDeltaX;
+                    ballY += ballDeltaY;
                 }
 
                 //Now lets draw the bricks on top of the game screen
@@ -102,11 +160,60 @@
                     context.fillText('Score: '+score,10,canvas.height-5);
                 }
 
-                //Calling all methods for debugging purposes
-                drawPaddle();
-                drawBall();
-                createBricks();
-                displayScoreBoard();
+                function animate() {
+                    //first clear all previous positions of objects drawn on screen
+                    context.clearRect(0,0,canvas.width,canvas.height);
+                    //update ball position
+                    moveBall();
+                    //update paddle position
+                    movePaddle();
+                    //draw new position of ball
+                    drawBall();
+                    //draw paddles new position
+                    drawPaddle();
+
+                    //redraw bricks
+                    createBricks();
+
+                    //redraw scoreboard
+                    displayScoreBoard();
+                }
+
+                function startGame() {
+                    ballDeltaY = -4;
+                    ballDeltaX = -2;
+                    paddleMove = 'NONE';
+                    paddleDeltaX = 0;
+
+                    // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
+                    gameLoop = setInterval(animate,20);
+
+                    // Start Tracking KeyStrokes
+                    $(document).keydown(function(evt) {
+                        if(evt.keyCode == 39) {
+                            paddleMove = 'RIGHT';
+                        } else if (evt.keyCode == 37) {
+                            paddleMove = 'LEFT';
+                        }
+                    });
+
+                    $(document).keyup(function(evt) {
+                        if(evt.keyCode == 39) {
+                            paddleMove = 'NONE';
+                        } else if(evt.keyCode == 37) {
+                            paddleMove = 'NONE';
+                        }
+                    });
+                }
+
+                function endGame() {
+                    clearInterval(gameLoop);
+                    context.fillStyle = 'red';
+                    context.fillText('Game Over',canvas.width/3,canvas.height/2);
+                }
+
+                startGame();
+
                 
             });
         </script>
