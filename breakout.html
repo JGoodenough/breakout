@@ -184,27 +184,56 @@
                     ballDeltaX = -2;
                     paddleMove = 'NONE';
                     paddleDeltaX = 0;
-
-                    // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
-                    gameLoop = setInterval(animate,20);
+                    gameSpeed = 20; //in milliseconds
 
                     // Start Tracking KeyStrokes
                     $(document).keydown(function(evt) {
-                        if(evt.keyCode == 39) {
+                        /*if(evt.keyCode == 39) {
                             paddleMove = 'RIGHT';
                         } else if (evt.keyCode == 37) {
+                            paddleMove = 'LEFT';
+                        }
+                        switch(evt.keyCode) {
+                            case 39:
+                                paddleMove = 'RIGHT';
+                                break;
+                            case 37:
+                                paddleMove = 'LEFT';
+                                break;
+                        }*/
+                        if(evt.keyCode == 39) {
+                            paddleMove = 'RIGHT';
+                        } 
+                        if (evt.keyCode == 37) {
                             paddleMove = 'LEFT';
                         }
                     });
 
                     $(document).keyup(function(evt) {
-                        if(evt.keyCode == 39) {
+                        /*if(evt.keyCode == 39) {
                             paddleMove = 'NONE';
                         } else if(evt.keyCode == 37) {
                             paddleMove = 'NONE';
                         }
+                        switch(evt.keyCode) {
+                            case 39:
+                                paddleMove = 'NONE';
+                                break;
+                            case 37:
+                                paddleMove = 'NONE';
+                                break;
+                        }*/
+                        if(evt.keyCode == 39) {
+                            paddleMove = 'NONE';
+                        } 
+                        if(evt.keyCode == 37) {
+                            paddleMove = 'NONE';
+                        }
                     });
-                }
+
+                    // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
+                    gameLoop = setInterval(animate,gameSpeed);
+                } 
 
                 function endGame() {
                     clearInterval(gameLoop);
