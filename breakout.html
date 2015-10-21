@@ -47,7 +47,7 @@
                 //declare and draw ball on screen
                 var ballX = 300;
                 var ballY = 300;
-                var ballRadius = 10;
+                var ballRadius = 5;
 
                 function drawBall() {
                     // context.beginPath when you draw primitive shapes
@@ -61,9 +61,9 @@
                     context.fill();
                 }
 
-                // how many pixels ball will move over the X-axis
+                // how many pixels ball will move over the X-axis each loop
                 var ballDeltaX;
-                // how many pixels ball will move over the Y-axis
+                // how many pixels ball will move over the Y-axis each loop
                 var ballDeltaY;
 
                 function moveBall() {
@@ -161,15 +161,18 @@
                                 var brickX = j*brickWidth;
                                 var brickY = i*brickHeight;
                                 if(
-                                    //barely touching from left
-                                    ((ballX + ballDeltaX + ballRadius) >= brickX) &&
-                                    (ballX + ballRadius <= brickX)
+                                    //barely touching from left (checking direction of ball movement L -> R)
+                                    ((ballX + ballDeltaX + ballRadius) >= brickX) // R position
+                                    &&
+                                    (ballX + ballRadius <= brickX) // L position
                                     ||
-                                    //barely touching from right
-                                    ((ballX + ballDeltaX - ballRadius <= brickX + brickWidth) && (ballX - ballRadius >= brickX + brickWidth))
+                                    //barely touching from right (checking direction of ball movement R -> L)
+                                    ((ballX + ballDeltaX - ballRadius <= brickX + brickWidth) // L position
+                                    && 
+                                    (ballX - ballRadius >= brickX + brickWidth)) // R position
                                     ) 
                                 {
-                                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) 
+                                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) // and within the boundaries of the bricks side wall
                                     {
                                         //weaken brick and increase score
                                         explodeBrick(i,j);
