@@ -69,8 +69,10 @@
                 function moveBall() {
                     // First we must check if we will bump into something
 
-                    // If top of the ball touches the top the reverse Y direction (move downwards)
-                    if(ballY + ballDeltaY - ballRadius < 0) {
+                    // If top of the ball touches the top then reverse Y direction (move downwards)
+                    if(ballY + ballDeltaY - ballRadius < 0
+                        // or if ball collides in Y direction with bricks
+                        || collisionYWithBricks()) {
                         ballDeltaY = -ballDeltaY;
                     }
 
@@ -83,7 +85,9 @@
                     //left of ball moves too far left - reverse direction to move right
                     if((ballX + ballDeltaX - ballRadius < 0) || 
                         //or right side of ball moves too far right - reverse direction to move left
-                        (ballX + ballDeltaX + ballRadius > canvas.width)) {
+                        (ballX + ballDeltaX + ballRadius > canvas.width)
+                        //or if ball colides in Y direction with bricks
+                        || collisionXWithBricks()) {
                         ballDeltaX = -ballDeltaX;
                     }
 
@@ -146,6 +150,86 @@
                     }
                 }
 
+                function collisionXWithBricks() {
+                    var bumpedX = false;
+                    for(var i=0; i < bricks.length; i++) 
+                    {
+                        for(var j=0; j < bricks[i].length; j++) 
+                        {
+                            if(bricks[i][j]) 
+                            { //if brick is still visible (not 0)
+                                var brickX = j*brickWidth;
+                                var brickY = i*brickHeight;
+                                if(
+                                    //barely touching from left
+                                    ((ballX + ballDeltaX + ballRadius) >= brickX) &&
+                                    (ballX + ballRadius <= brickX)
+                                    ||
+                                    //barely touching from right
+                                    ((ballX + ballDeltaX - ballRadius <= brickX + brickWidth) && (ballX - ballRadius >= brickX + brickWidth))
+                                    ) 
+                                {
+                                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) 
+                                    {
+                                        //weaken brick and increase score
+                                        explodeBrick(i,j);
+
+                                        bumpedX = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return bumpedX;
+                }
+
+                function collisionYWithBricks() {
+                    var bumpedY = false;
+                    for(var i=0;i < bricks.length;i++)
+                    {
+                        for(var j=0;j < bricks[i].length;j++)
+                        {
+                            if(bricks[i][j])
+                            { //if brick is still visible
+                                var brickX = j * brickWidth;
+                                var brickY = i * brickHeight;
+                                if (
+                                    //barley touching from below
+                                    ((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) 
+                                        && (ballY - ballRadius >= brickY + brickHeight))
+                                    ||
+                                    //barely touching from above
+                                    ((ballY + ballDeltaY + ballRadius >= brickY) &&
+                                        (ballY + ballRadius <= brickY))
+                                    )
+                                {
+                                    if(ballX + ballDeltaX + ballRadius >= brickX &&
+                                        ballX + ballDeltaX - ballRadius <= brickX + brickWidth)
+                                    {
+                                        //weaken brick and increase score
+                                        explodeBrick(i,j);
+                                        bumpedY = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return bumpedY;
+                }
+
+                function explodeBrick(i,j) {
+                    //first weaken the brick (0 means brick has gone)
+                    bricks[i][j]--;
+
+                    if(bricks[i][j]>0) {
+                        //the brick is weakened but still around. Give a single point.
+                        score++;
+                    } else {
+                        //give player an extra point when the brick disappears
+                        score += 2;
+                    }
+                }
+
                 //Setting up the scoreboard
                 var score = 0;
 
@@ -163,6 +247,13 @@
                 function animate() {
                     //first clear all previous positions of objects drawn on screen
                     context.clearRect(0,0,canvas.width,canvas.height);
+
+                    //redraw bricks
+                    createBricks();
+
+                    //redraw scoreboard
+                    displayScoreBoard();
+
                     //update ball position
                     moveBall();
                     //update paddle position
@@ -171,12 +262,6 @@
                     drawBall();
                     //draw paddles new position
                     drawPaddle();
-
-                    //redraw bricks
-                    createBricks();
-
-                    //redraw scoreboard
-                    displayScoreBoard();
                 }
 
                 function startGame() {
