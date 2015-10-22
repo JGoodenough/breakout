@@ -172,7 +172,7 @@
                                     (ballX - ballRadius >= brickX + brickWidth)) // R position
                                     ) 
                                 {
-                                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) // and within the boundaries of the bricks side wall
+                                    if((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) && (ballY + ballDeltaY + ballRadius >= brickY)) // and is within the boundaries of the bricks side wall
                                     {
                                         //weaken brick and increase score
                                         explodeBrick(i,j);
@@ -193,21 +193,21 @@
                         for(var j=0;j < bricks[i].length;j++)
                         {
                             if(bricks[i][j])
-                            { //if brick is still visible
+                            { //if brick is still visible aka != 0
                                 var brickX = j * brickWidth;
                                 var brickY = i * brickHeight;
                                 if (
-                                    //barley touching from below
-                                    ((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) 
-                                        && (ballY - ballRadius >= brickY + brickHeight))
+                                    //barley touching from below, ball is traveling from ground up
+                                    ((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) //upper position
+                                        && (ballY - ballRadius >= brickY + brickHeight))  //lower position
                                     ||
-                                    //barely touching from above
-                                    ((ballY + ballDeltaY + ballRadius >= brickY) &&
-                                        (ballY + ballRadius <= brickY))
+                                    //barely touching from above, ball is travelign from top down
+                                    ((ballY + ballDeltaY + ballRadius >= brickY) && // lower position
+                                        (ballY + ballRadius <= brickY)) // upper position
                                     )
                                 {
                                     if(ballX + ballDeltaX + ballRadius >= brickX &&
-                                        ballX + ballDeltaX - ballRadius <= brickX + brickWidth)
+                                        ballX + ballDeltaX - ballRadius <= brickX + brickWidth) //is within boundaries of brick top or bottom walls
                                     {
                                         //weaken brick and increase score
                                         explodeBrick(i,j);
