@@ -47,7 +47,7 @@
                 //declare and draw ball on screen
                 var ballX = 300;
                 var ballY = 300;
-                var ballRadius = 5;
+                var ballRadius = 10;
 
                 function drawBall() {
                     // context.beginPath when you draw primitive shapes
@@ -86,15 +86,15 @@
                     if((ballX + ballDeltaX - ballRadius < 0) || 
                         //or right side of ball moves too far right - reverse direction to move left
                         (ballX + ballDeltaX + ballRadius > canvas.width)
-                        //or if ball colides in Y direction with bricks
+                        //or if ball colides in X direction with bricks
                         || collisionXWithBricks()) {
                         ballDeltaX = -ballDeltaX;
                     }
 
                     // If the bottom of ball reaches top of paddle
-                    if(ballY + ballDeltaY + ballRadius >= paddleY) {
+                    if(ballY + ballDeltaY + ballRadius >= paddleY && ballY + ballDeltaY <= paddleY) {
                         // and it is positioned between the two ends of the paddle(is on top)
-                        if(ballX + ballDeltaX >= paddleX && ballX + ballDeltaX <= paddleX + paddleWidth) {
+                        if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
                             ballDeltaY = -ballDeltaY;
                         }
                     }
@@ -295,6 +295,7 @@
                         if (evt.keyCode == 37) {
                             paddleMove = 'LEFT';
                         }
+
                     });
 
                     $(document).keyup(function(evt) {
@@ -318,9 +319,10 @@
                             paddleMove = 'NONE';
                         }
                     });
-
+//console.log('before' + gameLoop);
                     // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
                     gameLoop = setInterval(animate,gameSpeed);
+                    console.log(gameLoop);
                 } 
 
                 function endGame() {
