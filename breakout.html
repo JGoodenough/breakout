@@ -325,7 +325,8 @@
                     ballDeltaY = -ballDeltaY; //make sure ball always goes up initially
                     gameLoop = 0;
                     context.fillStyle = 'red';
-                    context.fillText('Game Over',canvas.width/3,canvas.height/2);
+                    context.fillText('Game Over',canvas.width/3,canvas.height/2.5);
+                    context.fillText('Press Enter to Restart',canvas.width/3,canvas.height/2);
                 }
 
                 startGame();
