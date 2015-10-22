@@ -116,6 +116,13 @@
                     [2,1,2,1,2,1,0,1],
                     [1,2,1,1,0,3,1,1]
                 ];
+                function randomlyPopulateBricks() {
+                    for(var i=0;i<bricks.length;i++) {
+                        for(var j=0;j<bricks[i].length;j++) {
+                            bricks[i][j] = Math.floor(Math.random() * 5);
+                        }
+                    }
+                }
 
                 //iterate through the bricks array and draw each brick using drawBrick()
                 function createBricks() {
@@ -137,6 +144,9 @@
                             break;
                         case 3:
                             context.fillStyle = 'rgba(50,100,50,.5)';
+                            break;
+                        case 4:
+                            context.fillStyle = 'blue';
                             break;
                         default:
                             context.clearRect(x*brickWidth,y*brickHeight,brickWidth,brickHeight);
@@ -276,42 +286,26 @@
 
                     // Start Tracking KeyStrokes
                     $(document).keydown(function(evt) {
-                        /*if(evt.keyCode == 39) {
-                            paddleMove = 'RIGHT';
-                        } else if (evt.keyCode == 37) {
-                            paddleMove = 'LEFT';
-                        }
-                        switch(evt.keyCode) {
-                            case 39:
-                                paddleMove = 'RIGHT';
-                                break;
-                            case 37:
-                                paddleMove = 'LEFT';
-                                break;
-                        }*/
+
                         if(evt.keyCode == 39) {
                             paddleMove = 'RIGHT';
                         } 
                         if (evt.keyCode == 37) {
                             paddleMove = 'LEFT';
                         }
-
+                        if (evt.keyCode == 13) {
+                            if(gameLoop == 0) {
+                                ballX = 300;
+                                ballY = 300;
+                                randomlyPopulateBricks();
+                                context.fillStyle = '000';
+                                gameLoop = setInterval(animate,gameSpeed);
+                            }
+                        }
                     });
 
                     $(document).keyup(function(evt) {
-                        /*if(evt.keyCode == 39) {
-                            paddleMove = 'NONE';
-                        } else if(evt.keyCode == 37) {
-                            paddleMove = 'NONE';
-                        }
-                        switch(evt.keyCode) {
-                            case 39:
-                                paddleMove = 'NONE';
-                                break;
-                            case 37:
-                                paddleMove = 'NONE';
-                                break;
-                        }*/
+                        
                         if(evt.keyCode == 39) {
                             paddleMove = 'NONE';
                         } 
@@ -319,7 +313,7 @@
                             paddleMove = 'NONE';
                         }
                     });
-//console.log('before' + gameLoop);
+
                     // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
                     gameLoop = setInterval(animate,gameSpeed);
                     
@@ -327,6 +321,9 @@
 
                 function endGame() {
                     clearInterval(gameLoop);
+                    //reset game
+                    ballDeltaY = -ballDeltaY; //make sure ball always goes up initially
+                    gameLoop = 0;
                     context.fillStyle = 'red';
                     context.fillText('Game Over',canvas.width/3,canvas.height/2);
                 }
