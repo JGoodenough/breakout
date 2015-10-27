@@ -277,8 +277,15 @@
                     drawPaddle();
                 }
 
+                /* ------------------------------------------
+                Audio
+                --------------------------------------------*/
+
+                var bouncingSound = new Audio("bounce.ogg");
+                var breakingSound = new Audio("break.ogg");
+
                 function startGame() {
-                    ballDeltaY = -4;
+                    ballDeltaY = -6;
                     ballDeltaX = -2;
                     paddleMove = 'NONE';
                     paddleDeltaX = 0;
