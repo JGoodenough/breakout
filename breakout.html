@@ -124,6 +124,7 @@
                 var bricksPerRow = 8;
                 var brickHeight = 20;
                 var brickWidth = canvas.width/bricksPerRow;
+                var defaultAmountBrickRows = 4;
                 //number of different type of bricks from 0,1,2....N
                 var numOfBrickType = 5;
 
@@ -135,10 +136,10 @@
                     [1,2,1,1,0,3,1,1]
                 ];
                 function randomlyPopulateBricks() {
-                    for(var i=0;i<bricks.length;i++) {
-                        for(var j=0;j<bricks[i].length;j++) {
-                            bricks[i][j] = Math.floor(Math.random() * numOfBrickType);
-                        }
+                    //first clear old brick array
+                    bricks = [];
+                    for(var i=0;i<defaultAmountBrickRows;i++) {
+                        addRowToBricks();
                     }
                 }
 
@@ -319,8 +320,11 @@
                 var bouncingSound = new Audio("bounce.wav");
                 var breakingSound = new Audio("break.wav");
                 var diedSound = new Audio("died.wav");
+                var gameSong = new Audio("Marching Bands Of Manhattan.mp3");
 
                 function startGame() {
+                    gameSong.play();
+                    gameSong.loop = true;
                     ballDeltaY = -6;
                     ballDeltaX = -2;
                     paddleMove = 'NONE';
@@ -342,6 +346,7 @@
                                 ballY = 300;
                                 randomlyPopulateBricks();
                                 context.fillStyle = '000';
+                                gameSong.play();
                                 gameLoop = setInterval(animate,gameSpeed);
                             }
                         }
@@ -370,6 +375,7 @@
                     context.fillStyle = 'red';
                     context.fillText('Game Over',canvas.width/3,canvas.height/2.5);
                     context.fillText('Press Enter to Restart',canvas.width/3,canvas.height/2);
+                    gameSong.pause();
                 }
 
                 randomlyPopulateBricks();
