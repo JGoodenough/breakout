@@ -74,10 +74,12 @@
                         // or if ball collides in Y direction with bricks
                         || collisionYWithBricks()) {
                         ballDeltaY = -ballDeltaY;
+                        bouncingSound.play();
                     }
 
                     // If the bottom of the ball touches the bottom of the screen then end the game
                     if(ballY + ballDeltaY + ballRadius > canvas.height) {
+                        diedSound.play();
                         endGame();
                     }
 
@@ -89,6 +91,7 @@
                         //or if ball colides in X direction with bricks
                         || collisionXWithBricks()) {
                         ballDeltaX = -ballDeltaX;
+                        bouncingSound.play();
                     }
 
                     // If the bottom of ball reaches top of paddle
@@ -96,6 +99,7 @@
                         // and it is positioned between the two ends of the paddle(is on top)
                         if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
                             ballDeltaY = -ballDeltaY;
+                            bouncingSound.play();
                         }
                     }
 
@@ -240,6 +244,8 @@
                     } else {
                         //give player an extra point when the brick disappears
                         score += 2;
+
+                        breakingSound.play();
                     }
                 }
 
@@ -281,8 +287,9 @@
                 Audio
                 --------------------------------------------*/
 
-                var bouncingSound = new Audio("bounce.ogg");
-                var breakingSound = new Audio("break.ogg");
+                var bouncingSound = new Audio("bounce.wav");
+                var breakingSound = new Audio("break.wav");
+                var diedSound = new Audio("died.wav");
 
                 function startGame() {
                     ballDeltaY = -6;
