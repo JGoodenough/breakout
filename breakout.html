@@ -23,6 +23,11 @@
                 var paddleDeltaY = 0;
                 var paddleSpeedX = 10;
 
+                // paddle hit counter, keep track how many time ball hit paddle since start of game
+                var paddleHitCount = 1;
+                // check paddle was hit
+                var checkPaddleHit = false;
+
                 function drawPaddle() {
                     context.fillRect(paddleX,paddleY,paddleWidth,paddleHeight);
                 }
@@ -69,6 +74,11 @@
                 function moveBall() {
                     // First we must check if we will bump into something
 
+                    //check ball already hit paddle
+                    if(checkPaddleHit && ballY < paddleY) {
+                        checkPaddleHit = false;
+                    }
+
                     // If top of the ball touches the top then reverse Y direction (move downwards)
                     if(ballY + ballDeltaY - ballRadius < 0
                         // or if ball collides in Y direction with bricks
@@ -99,6 +109,8 @@
                         // and it is positioned between the two ends of the paddle(is on top)
                         if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
                             ballDeltaY = -ballDeltaY;
+                            paddleHitCount++;
+                            checkPaddleHit = true;
                             bouncingSound.play();
                         }
                     }
@@ -112,6 +124,8 @@
                 var bricksPerRow = 8;
                 var brickHeight = 20;
                 var brickWidth = canvas.width/bricksPerRow;
+                //number of different type of bricks from 0,1,2....N
+                var numOfBrickType = 5;
 
                 // Brick Layout: 1 is orange, 2 is green, 3 is gray, 0 means no brick
                 var bricks = [
@@ -123,9 +137,19 @@
                 function randomlyPopulateBricks() {
                     for(var i=0;i<bricks.length;i++) {
                         for(var j=0;j<bricks[i].length;j++) {
-                            bricks[i][j] = Math.floor(Math.random() * 5);
+                            bricks[i][j] = Math.floor(Math.random() * numOfBrickType);
                         }
                     }
+                }
+
+                function addRowToBricks() {
+                    var tempRowArray = [];
+                    //randomly generate new row
+                    for(var j=0;j<bricksPerRow;j++) {
+                        tempRowArray[j] = Math.floor(Math.random() * numOfBrickType);
+                    }
+                    //add row to beginning of array
+                    bricks.unshift(tempRowArray);
                 }
 
                 //iterate through the bricks array and draw each brick using drawBrick()
@@ -266,6 +290,11 @@
                 function animate() {
                     //first clear all previous positions of objects drawn on screen
                     context.clearRect(0,0,canvas.width,canvas.height);
+
+                    // every 10 paddle hits add row of bricks
+                    if(paddleHitCount % 10 === 0 && checkPaddleHit) {
+                        addRowToBricks();
+                    }
 
                     //redraw bricks
                     createBricks();
