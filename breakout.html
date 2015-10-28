@@ -109,15 +109,22 @@
                         // and it is positioned between the two ends of the paddle(is on top)
                         if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
                             ballDeltaY = -ballDeltaY;
-                            // TODO add ability to control where ball goes based on paddle movement
+
+                            //TODO :> decide direction of ball depending on where it hits on the paddle when paddle is not moving and possibly when paddle is moving
+
+                            //ability to control where ball goes based on paddle movement
                             if(paddleMove == 'LEFT' || paddleMove == 'RIGHT' ) {
+                                // if paddle is moving left send ball moving back left if ball is coming from the left - along X-axis
                                 if(paddleMove == 'LEFT' && ballDeltaX > 0) {
                                     ballDeltaX = -ballDeltaX;
-                                } else if(paddleMove == 'RIGHT' && ballDeltaX < 0) {
+                                } 
+                                // if paddle is moving right send ball moving back right if ball is coming from the right - along X-axis
+                                else if(paddleMove == 'RIGHT' && ballDeltaX < 0) {
                                     ballDeltaX = -ballDeltaX;
                                 }
 
                             } else {
+                                // if paddle did not move send ball moving in same direction (ie. Coming from R ->  Going to R or L -> L)
                                 ballDeltaX = ballDeltaX;
                             }
                             paddleHitCount++;
