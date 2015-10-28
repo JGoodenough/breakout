@@ -108,8 +108,18 @@
                     if(ballY + ballDeltaY + ballRadius >= paddleY && ballY + ballDeltaY <= paddleY) {
                         // and it is positioned between the two ends of the paddle(is on top)
                         if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
-                            // TODO add ability to control where ball goes based on paddle movement
                             ballDeltaY = -ballDeltaY;
+                            // TODO add ability to control where ball goes based on paddle movement
+                            if(paddleMove == 'LEFT' || paddleMove == 'RIGHT' ) {
+                                if(paddleMove == 'LEFT' && ballDeltaX > 0) {
+                                    ballDeltaX = -ballDeltaX;
+                                } else if(paddleMove == 'RIGHT' && ballDeltaX < 0) {
+                                    ballDeltaX = -ballDeltaX;
+                                }
+
+                            } else {
+                                ballDeltaX = ballDeltaX;
+                            }
                             paddleHitCount++;
                             checkPaddleHit = true;
                             bouncingSound.play();
