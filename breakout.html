@@ -52,7 +52,7 @@
                 //declare and draw ball on screen
                 var ballX = 300;
                 var ballY = 300;
-                var ballRadius = 4;
+                var ballRadius = 5;
 
                 function drawBall() {
                     // context.beginPath when you draw primitive shapes
@@ -108,6 +108,7 @@
                     if(ballY + ballDeltaY + ballRadius >= paddleY && ballY + ballDeltaY <= paddleY) {
                         // and it is positioned between the two ends of the paddle(is on top)
                         if(ballX + ballDeltaX + ballRadius >= paddleX && ballX + ballDeltaX - ballRadius <= paddleX + paddleWidth) {
+                            // TODO add ability to control where ball goes based on paddle movement
                             ballDeltaY = -ballDeltaY;
                             paddleHitCount++;
                             checkPaddleHit = true;
