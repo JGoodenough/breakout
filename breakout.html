@@ -6,10 +6,17 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script>
             $(function() {
+                /* ------------------------------------------
+                Game Canvas
+                --------------------------------------------*/
                 //this is the same as document.getElementById('canvas');
                 var canvas = $('canvas')[0];
                 //different browsers support different contexts. All support 2d
                 var context = canvas.getContext('2d');
+
+                /* ------------------------------------------
+                Paddle
+                --------------------------------------------*/
 
                 //declare and draw paddle on screen
                 var paddleX = 200;
@@ -48,6 +55,10 @@
 
                     paddleX += paddleDeltaX;
                 }
+
+                /* ------------------------------------------
+                Ball
+                --------------------------------------------*/
 
                 //declare and draw ball on screen
                 var ballX = 300;
@@ -138,6 +149,10 @@
                     ballY += ballDeltaY;
                 }
 
+                /* ------------------------------------------
+                Bricks
+                --------------------------------------------*/
+
                 //Now lets draw the bricks on top of the game screen
                 var bricksPerRow = 8;
                 var brickHeight = 20;
@@ -180,6 +195,21 @@
                     }
                 }
 
+                function explodeBrick(i,j) {
+                    //first weaken the brick (0 means brick has gone)
+                    bricks[i][j]--;
+
+                    if(bricks[i][j]>0) {
+                        //the brick is weakened but still around. Give a single point.
+                        score++;
+                    } else {
+                        //give player an extra point when the brick disappears
+                        score += 2;
+
+                        breakingSound.play();
+                    }
+                }
+
                 //draw a single brick
                 function drawBrick(x,y,type) {
                     switch(type) { // if brick is sitll visible; three colors for three types of bricks
@@ -206,6 +236,13 @@
                         context.strokeRect(x*brickWidth+1,y*brickHeight+1,brickWidth-2,brickHeight-2);
                     }
                 }
+
+                    /* ------------------------------------------
+                    Colision Detection:
+                    - for bricks
+                    - for paddle
+                    - for ball
+                    --------------------------------------------*/
 
                 function collisionXWithBricks() {
                     var bumpedX = false;
@@ -277,20 +314,9 @@
                     return bumpedY;
                 }
 
-                function explodeBrick(i,j) {
-                    //first weaken the brick (0 means brick has gone)
-                    bricks[i][j]--;
-
-                    if(bricks[i][j]>0) {
-                        //the brick is weakened but still around. Give a single point.
-                        score++;
-                    } else {
-                        //give player an extra point when the brick disappears
-                        score += 2;
-
-                        breakingSound.play();
-                    }
-                }
+                /* ------------------------------------------
+                Scoreboard
+                --------------------------------------------*/
 
                 //Setting up the scoreboard
                 var score = 0;
@@ -305,6 +331,10 @@
                     //Write Text 5 pixels from the bottom of the canvas
                     context.fillText('Score: '+score,10,canvas.height-5);
                 }
+
+                /* ------------------------------------------
+                Animation loop
+                --------------------------------------------*/
 
                 function animate() {
                     //first clear all previous positions of objects drawn on screen
@@ -340,8 +370,17 @@
                 var diedSound = new Audio("died.wav");
                 var gameSong = new Audio("Marching Bands Of Manhattan.mp3");
 
+                /* ------------------------------------------
+                start game function declaration and definition
+                Description:
+                - init
+                - listen for input
+                - run animation loop
+                --------------------------------------------*/
+
                 function startGame() {
-                    gameSong.play();
+                    // Initialize main game components
+                    //gameSong.play();
                     gameSong.loop = true;
                     ballDeltaY = -6;
                     ballDeltaX = -2;
@@ -385,6 +424,10 @@
                     
                 } 
 
+                /* ------------------------------------------
+                End Game 
+                --------------------------------------------*/
+
                 function endGame() {
                     clearInterval(gameLoop);
                     //reset game
@@ -396,7 +439,9 @@
                     gameSong.pause();
                 }
 
+                // init - randomly generate breaks before starting game
                 randomlyPopulateBricks();
+                // start game
                 startGame();
 
                 
