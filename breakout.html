@@ -7,6 +7,13 @@
         <script>
             $(function() {
                 /* ------------------------------------------
+                Miscellaneous Global variables
+                (not attached to any specific assets within the game)
+                --------------------------------------------*/
+                // stores setInterval id of animationLoop
+                var gameLoop;
+
+                /* ------------------------------------------
                 Game Canvas
                 --------------------------------------------*/
                 //this is the same as document.getElementById('canvas');
@@ -237,12 +244,12 @@
                     }
                 }
 
-                    /* ------------------------------------------
-                    Colision Detection:
-                    - for bricks
-                    - for paddle
-                    - for ball
-                    --------------------------------------------*/
+                /* ------------------------------------------
+                Colision Detection:
+                - for bricks
+                - for paddle
+                - for ball
+                --------------------------------------------*/
 
                 function collisionXWithBricks() {
                     var bumpedX = false;
@@ -403,7 +410,7 @@
                                 ballY = 300;
                                 randomlyPopulateBricks();
                                 context.fillStyle = '000';
-                                gameSong.play();
+                                //gameSong.play();
                                 gameLoop = setInterval(animate,gameSpeed);
                             }
                         }
