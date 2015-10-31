@@ -102,12 +102,12 @@
                         // or if ball collides in Y direction with bricks
                         || collisionYWithBricks()) {
                         ballDeltaY = -ballDeltaY;
-                        bouncingSound.play();
+                        gameSoundFX.bouncingSound.play();
                     }
 
                     // If the bottom of the ball touches the bottom of the screen then end the game
                     if(ballY + ballDeltaY + ballRadius > canvas.height) {
-                        diedSound.play();
+                        gameSoundFX.diedSound.play();
                         endGame();
                     }
 
@@ -119,7 +119,7 @@
                         //or if ball colides in X direction with bricks
                         || collisionXWithBricks()) {
                         ballDeltaX = -ballDeltaX;
-                        bouncingSound.play();
+                        gameSoundFX.bouncingSound.play();
                     }
 
                     // If the bottom of ball reaches top of paddle
@@ -147,7 +147,7 @@
                             }
                             paddleHitCount++;
                             checkPaddleHit = true;
-                            bouncingSound.play();
+                            gameSoundFX.bouncingSound.play();
                         }
                     }
 
@@ -213,7 +213,7 @@
                         //give player an extra point when the brick disappears
                         score += 2;
 
-                        breakingSound.play();
+                        gameSoundFX.breakingSound.play();
                     }
                 }
 
@@ -371,11 +371,23 @@
                 /* ------------------------------------------
                 Audio
                 --------------------------------------------*/
+                var gameSoundFX = {};
+                gameSoundFX.bouncingSound = new Audio("bounce.wav");
+                gameSoundFX.breakingSound = new Audio("break.wav");
+                gameSoundFX.diedSound = new Audio("died.wav");
+                gameSoundFX.gameSong = new Audio("Marching Bands Of Manhattan.mp3");
 
-                var bouncingSound = new Audio("bounce.wav");
-                var breakingSound = new Audio("break.wav");
-                var diedSound = new Audio("died.wav");
-                var gameSong = new Audio("Marching Bands Of Manhattan.mp3");
+                function setGameSoundFXVolume(level) {
+                    if(!level) level = 0.5; //if no volume is set make it default level of 0.5
+                    for(var prop in gameSoundFX) {
+                        if(gameSoundFX[prop]) {
+                            gameSoundFX[prop].volume = level;
+                        }
+                        console.log(typeof gameSoundFX[prop].toString() + " -> " + level);
+                    }
+                }
+
+                setGameSoundFXVolume(0.1);
 
                 /* ------------------------------------------
                 start game function declaration and definition
@@ -387,9 +399,9 @@
 
                 function startGame() {
                     // Initialize main game components
-                    //gameSong.play();
-                    gameSong.loop = true;
-                    ballDeltaY = -6;
+                    //gameSoundFX.gameSong.play();
+                    gameSoundFX.gameSong.loop = true;
+                    ballDeltaY = -8;
                     ballDeltaX = -2;
                     paddleMove = 'NONE';
                     paddleDeltaX = 0;
@@ -410,7 +422,7 @@
                                 ballY = 300;
                                 randomlyPopulateBricks();
                                 context.fillStyle = '000';
-                                //gameSong.play();
+                                //gameSoundFX.gameSong.play();
                                 gameLoop = setInterval(animate,gameSpeed);
                             }
                         }
@@ -443,7 +455,7 @@
                     context.fillStyle = 'red';
                     context.fillText('Game Over',canvas.width/3,canvas.height/2.5);
                     context.fillText('Press Enter to Restart',canvas.width/3,canvas.height/2);
-                    gameSong.pause();
+                    gameSoundFX.gameSong.pause();
                 }
 
                 // init - randomly generate breaks before starting game
