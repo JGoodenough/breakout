@@ -221,16 +221,16 @@
                 function drawBrick(x,y,type) {
                     switch(type) { // if brick is sitll visible; three colors for three types of bricks
                         case 1: 
-                            context.fillStyle = 'orange';
+                            context.fillStyle = 'lightyellow';
                             break;
                         case 2:
-                            context.fillStyle = 'rgb(100,200,100)';
+                            context.fillStyle = 'yellow';//'rgb(100,200,100)';
                             break;
                         case 3:
-                            context.fillStyle = 'rgba(50,100,50,.5)';
+                            context.fillStyle = 'orange';//rgba(50,100,50,.5)';
                             break;
                         case 4:
-                            context.fillStyle = 'blue';
+                            context.fillStyle = 'black';//blue';
                             break;
                         default:
                             context.clearRect(x*brickWidth,y*brickHeight,brickWidth,brickHeight);
