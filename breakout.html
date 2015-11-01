@@ -458,9 +458,8 @@
                     }
                     });
                     $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
-                    //only have mouse control volume control *** currently NOT WORKING????
-                    $("#slider-vertical").unbind('keydown');
-                    $("#slider-vertical").unbind('keyup');
+                    //only have mouse control volume control 
+                    $("#slider-vertical .ui-slider-handle").unbind('keydown');
 
                     // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
                     gameLoop = setInterval(animate,gameSpeed);
