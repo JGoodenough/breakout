@@ -3,7 +3,10 @@
     <head>
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
         <title>Breakout - A fast fun game</title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script>
             $(function() {
                 /* ------------------------------------------
@@ -378,16 +381,17 @@
                 gameSoundFX.gameSong = new Audio("Marching Bands Of Manhattan.mp3");
 
                 function setGameSoundFXVolume(level) {
+                    console.log(level);
                     if(!level) level = 0.5; //if no volume is set make it default level of 0.5
                     for(var prop in gameSoundFX) {
                         if(gameSoundFX[prop]) {
-                            gameSoundFX[prop].volume = level;
+                            gameSoundFX[prop].volume = level  * 0.01;
                         }
-                        console.log(typeof gameSoundFX[prop].toString() + " -> " + level);
+                        //console.log(typeof gameSoundFX[prop].toString() + " -> " + level);
                     }
                 }
 
-                setGameSoundFXVolume(0.1);
+                //setGameSoundFXVolume(0.1);
 
                 /* ------------------------------------------
                 start game function declaration and definition
@@ -438,6 +442,26 @@
                         }
                     });
 
+                    // Volume Control
+                    $( "#slider-vertical" ).slider({
+                    orientation: "vertical",
+                    range: "min",
+                    min: 0,
+                    max: 100,
+                    value: 60,
+                    slide: function( event, ui ) {
+                        //console.log(event);
+                        var volumeLevel = ui.value;
+                        $( "#amount" ).val( ui.value );
+                        console.log(typeof volumeLevel);
+                        setGameSoundFXVolume(volumeLevel);
+                    }
+                    });
+                    $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
+                    //only have mouse control volume control *** currently NOT WORKING????
+                    $("#slider-vertical").unbind('keydown');
+                    $("#slider-vertical").unbind('keyup');
+
                     // call the animate() function every 20ms (.02 of a second) until the clearInterval(gameloop) is called
                     gameLoop = setInterval(animate,gameSpeed);
                     
@@ -479,5 +503,11 @@
         <canvas id="canvas" width="400" height="500"> 
           Your browser does not support the HTML5 Canvas feature. This game uses new HTML5 features and will only work on the latest versions of Firefox, Safari or Chrome (and maybe Internet Explorer 9).
         </canvas>   
+        <p>
+          <label for="amount">Volume:</label>
+          <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+         
+        <div id="slider-vertical" style="height:200px;"></div>
     </body>
 </html>
