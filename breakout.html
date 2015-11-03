@@ -380,7 +380,7 @@
                 gameSoundFX.diedSound = new Audio("died.wav");
                 gameSoundFX.gameSong = new Audio("Marching Bands Of Manhattan.mp3");
 
-                function setGameSoundFXVolume(level) {
+                gameSoundFX.setGameSoundFXVolume = function (level) {
                     console.log(level);
                     if(!level) level = 0.5; //if no volume is set make it default level of 0.5
                     for(var prop in gameSoundFX) {
@@ -455,7 +455,7 @@
                         var volumeLevel = ui.value;
                         $( "#amount" ).val( ui.value );
                         console.log(typeof volumeLevel);
-                        setGameSoundFXVolume(volumeLevel);
+                        gameSoundFX.setGameSoundFXVolume(volumeLevel);
                     }
                     });
                     $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
