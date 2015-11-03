@@ -1,4 +1,4 @@
-# breakout
+# Breakout
 remake of the classic game breakout done in JavaScript/Jquery and HTML5 Canvas
 
 Author: Jesse Goodenough
