@@ -254,6 +254,7 @@
                 - for ball
                 --------------------------------------------*/
 
+                // Test side wall collision with bricks
                 function collisionXWithBricks() {
                     var bumpedX = false;
                     for(var i=0; i < bricks.length; i++) 
@@ -290,6 +291,7 @@
                     return bumpedX;
                 }
 
+                // Test top and bottom wall collision with bricks
                 function collisionYWithBricks() {
                     var bumpedY = false;
                     for(var i=0;i < bricks.length;i++)
@@ -334,7 +336,7 @@
                 function displayScoreBoard() {
                     //Set the text font and color
                     context.fillStyle = 'rgb(50,100,50)';
-                    context.font = '15px Times New Roman';
+                    context.font = '12px Verdana, Sans-Serif';
 
                     //Clear the bottom 30 pixels of the canvas
                     context.clearRect(0,canvas.height-30, canvas.width,30);
