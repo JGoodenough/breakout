@@ -45,8 +45,10 @@
                 var paddle = {};
                 // Direction in which paddle is moving
                 paddle.paddleMove = 'NONE';
-                paddle.isLeftArrowDown = false;
-                paddle.isRightArrowDown = false;
+                paddle.keyLeftPressedDown = false;
+                paddle.keyRightPressedDown = false;
+                paddle.getTimeRightKeyPressed = new Date();
+                paddle.getTimeLeftKeyPressed = new Date();
 
                 // paddle hit counter, keep track how many time ball hit paddle since start of game
                 var paddleHitCount = 1;
@@ -58,9 +60,9 @@
                 }
 
                 function movePaddle() {
-                    if(paddleMove == 'LEFT') {
+                    if(paddleMove == 'LEFT' && paddle.keyLeftPressedDown && !paddle.keyRightPressedDown) {
                         paddleDeltaX = -paddleSpeedX;
-                    } else if(paddleMove == 'RIGHT') {
+                    } else if(paddleMove == 'RIGHT' && paddle.keyRightPressedDown && !paddle.keyLeftPressedDown) {
                         paddleDeltaX = paddleSpeedX;
                     } else {
                         paddleDeltaX = 0;
@@ -423,11 +425,26 @@
                     // Start Tracking KeyStrokes
                     $(document).keydown(function(evt) {
 
-                        if(evt.keyCode == 39) {
+                        if(evt.keyCode == 39) { // Right arrow key
+                            // time right key is pressed
+                            paddle.getTimeRightKeyPressed = (new Date()).getTime();
+
+                            if(paddle.keyLeftPressedDown && paddle.getTimeLeftKeyPressed < paddle.getTimeRightKeyPressed) {
+                                paddleMove = 'RIGHT';
+                                paddle.keyLeftPressedDown = false;
+                            }
                             paddleMove = 'RIGHT';
+                            paddle.keyRightPressedDown = true;
                         } 
-                        if (evt.keyCode == 37) {
+                        if (evt.keyCode == 37) { // Left arrow key
+                            // time left key is pressed
+                            paddle.getTimeLeftKeyPressed = (new Date()).getTime();
+
+                            if(paddle.keyRightPressedDown && paddle.getTimeRightKeyPressed < paddle.getTimeLeftKeyPressed) {
+                                paddle.keyRightPressedDown = false;
+                            }
                             paddleMove = 'LEFT';
+                            paddle.keyLeftPressedDown = true;
                         }
                         if (evt.keyCode == 13) {
                             if(gameLoop == 0) {
@@ -442,12 +459,14 @@
                     });
 
                     $(document).keyup(function(evt) {
-                        
-                        if(evt.keyCode == 39) {
+
+                        if(evt.keyCode == 39) { // Right arrow key
                             paddleMove = 'NONE';
+                            paddle.keyRightPressedDown = false;
                         } 
-                        if(evt.keyCode == 37) {
+                        if(evt.keyCode == 37) { // Left arrow key
                             paddleMove = 'NONE';
+                            paddle.keyLeftPressedDown = false;
                         }
                     });
 
