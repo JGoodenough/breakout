@@ -42,7 +42,16 @@
                 // Direction in which paddle is moving
                 var paddleMove = 'NONE';
                 // Test object for paddle 
-                var paddle = {};
+                var paddle = {
+                    x: 200,
+                    y: 460,
+                    width: 80,
+                    height: 10,
+                    deltaX: 0,
+                    deltaY: 0,
+                    speedX: 10,
+                    moveDirection: 'NONE'
+                };
                 // Direction in which paddle is moving
                 paddle.paddleMove = 'NONE';
                 paddle.keyLeftPressedDown = false;
