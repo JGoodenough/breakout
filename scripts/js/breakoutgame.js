@@ -394,10 +394,11 @@ $(function() {
     Audio
     --------------------------------------------*/
     var gameSoundFX = {};
-    gameSoundFX.bouncingSound = new Audio("bounce.wav");
-    gameSoundFX.breakingSound = new Audio("break.wav");
-    gameSoundFX.diedSound = new Audio("died.wav");
-    gameSoundFX.gameSong = new Audio("Marching Bands Of Manhattan.mp3");
+    gameSoundFX.rootAudioFilePath = 'media/'
+    gameSoundFX.bouncingSound = new Audio(gameSoundFX.rootAudioFilePath + "bounce.wav");
+    gameSoundFX.breakingSound = new Audio(gameSoundFX.rootAudioFilePath + "break.wav");
+    gameSoundFX.diedSound = new Audio(gameSoundFX.rootAudioFilePath + "died.wav");
+    gameSoundFX.gameSong = new Audio(gameSoundFX.rootAudioFilePath + "Marching Bands Of Manhattan.mp3");
 
     gameSoundFX.setGameSoundFXVolume = function (level) {
         console.log(level);
