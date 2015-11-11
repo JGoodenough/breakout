@@ -209,7 +209,7 @@ $(function() {
         for(var j=0;j<bricksPerRow;j++) {
             tempRowArray[j] = Math.floor(Math.random() * numOfBrickType);
         }
-        //add row to beginning of array
+        //add randomly generated row to beginning of array (top)
         bricks.unshift(tempRowArray);
     }
 
