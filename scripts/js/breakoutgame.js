@@ -324,7 +324,7 @@ $(function() {
                         ((ballY + ballDeltaY - ballRadius <= brickY + brickHeight) //upper position
                             && (ballY - ballRadius >= brickY + brickHeight))  //lower position
                         ||
-                        //barely touching from above, ball is travelign from top down
+                        //barely touching from above, ball is traveling from top down
                         ((ballY + ballDeltaY + ballRadius >= brickY) && // lower position
                             (ballY + ballRadius <= brickY)) // upper position
                         )
